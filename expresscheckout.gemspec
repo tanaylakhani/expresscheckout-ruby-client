@@ -9,13 +9,15 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Juspay"]
   spec.email         = ["ec@juspay.in"]
 
-  spec.summary       = %q{Juspay ExpressCheckout Ruby Library}
-  spec.description   = %q{Interact with the Juspay API through native Ruby function calls}
-  spec.homepage      = "http://www.juspay.in"
+  spec.summary       = %q{Juspay ExpressCheckout's Ruby API}
+  spec.description   = %q{Juspay ExpressCheckout's Ruby API}
+  spec.homepage      = "https://www.juspay.in"
   spec.license       = "MIT"
 
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "http://mygemserver.com"
+    spec.metadata['allowed_push_host'] = "https://rubygems.org"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
@@ -23,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ["lib","lib/Orders.rb","lib/expresscheckout.rb","lib/Payments.rb","lib/Cards.rb","lib/Test.rb","lib/util.rb",]
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"

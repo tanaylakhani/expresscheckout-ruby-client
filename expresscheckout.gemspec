@@ -25,9 +25,11 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib","lib/Orders.rb","lib/expresscheckout.rb","lib/Payments.rb","lib/Cards.rb","lib/Test.rb","lib/util.rb",]
+  spec.require_paths = ["lib","lib/Orders.rb","lib/expresscheckout.rb","lib/Payments.rb","lib/Cards.rb","lib/Test.rb","lib/util.rb","lib/Customers.rb","lib/Wallets.rb"]
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
 end
+
+pay_61IBXIRnhNfF2r

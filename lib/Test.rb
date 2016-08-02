@@ -1,6 +1,8 @@
 require_relative 'Orders'
 require_relative 'Cards'
 require_relative 'Payments'
+require_relative 'Wallets'
+require_relative 'Customers'
 require 'minitest/autorun'
 require 'pp'
 
@@ -17,8 +19,8 @@ end
 
 class Test < Minitest::Test
 
-  $api_key = '4168A8A476B84DBCAF409C24F379BAC5'
-  $environment = 'production'
+  $api_key = '2CA3A4F3398B4B248787A32F3D9619E5'
+  $environment = 'sandbox'
 
   def setup
     @timestamp = Time.now.to_i
@@ -88,13 +90,10 @@ class Test < Minitest::Test
 
     # Test for create_card_payment
     payment = Payments.create_card_payment(
-        order_id:1465893617,
-        merchant_id:'juspay_recharge',
-        payment_method_type:'CARD',
-        card_token:'68d6b0c6-6e77-473f-a05c-b460ef983fd8',
+        order_id:1470043679,
+        merchant_id:'azhar',
         redirect_after_payment:false,
-        format:'json',
-        card_number:'5243681100075285',
+        card_number:'4242424242424242',
         name_on_card:'Customer',
         card_exp_year:'20',
         card_exp_month:'12',
@@ -105,15 +104,58 @@ class Test < Minitest::Test
     pp payment
     # Test for create_net_banking_payment
     payment = Payments.create_net_banking_payment(
-        order_id:1465893617,
-        merchant_id:'juspay_recharge',
-        payment_method_type:'NB',
-        payment_method:'NB_ICICI',
-        redirect_after_payment:false,
-        format:'json')
+        order_id:1470043679,
+        merchant_id:'azhar',
+        payment_method:'NB_DUMMY',
+        redirect_after_payment:false)
     refute_nil(payment.txn_id)
     assert_equal(payment.status, 'PENDING_VBV')
     pp payment
+
+    # Test for create_wallet_payment
+    payment = Payments.create_wallet_payment(
+        order_id:'check5',
+        merchant_id:'azharamin',
+        payment_method:'MOBIKWIK',
+        redirect_after_payment:false)
+    refute_nil(payment.txn_id)
+    pp payment
+    assert_match(/^(PENDING_VBV|CHARGED)$/,payment.status)
+  end
+
+  def test_customers
+    #Add customer
+    customer = Customers.add(
+        object_reference_id: 'CustId123', 
+        mobile_number: '7272727272', 
+        email_address: 'az@temp.com', 
+        first_name: 'temp',
+        last_name: 'kumar',
+        mobile_country_code: '35'
+      )
+    refute_nil(customer.id)
+    pp customer
+
+    List all customer 
+    customer = Customers.list()
+    pp customer
+  end
+
+  def test_wallets
+    # List wallets by orderId
+    wallets = Wallets.list(order_id:'check6')
+    pp wallets
+    refute_nil(wallets[0].id)
+
+    # List wallets by customerId
+    wallets = Wallets.list(customer_id:'guest_user_101')
+    pp wallets
+    refute_nil(wallets[0].id)
+
+    # List wallets by customerId
+    wallets = Wallets.refresh_balance(customer_id:'guest_user_104')
+    pp wallets
+    refute_nil(wallets[0].id)
   end
 end
 

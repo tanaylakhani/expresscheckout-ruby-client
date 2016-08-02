@@ -3,7 +3,7 @@ require_relative 'expresscheckout'
 def request(method,url,parameters={})
   if $environment == 'production'
     $server = 'https://api.juspay.in'
-  elsif $environment == 'staging'
+  elsif $environment == 'sandbox'
     $server = 'https://sandbox.juspay.in'
   else
     raise 'ERROR: environment variable can be "production" or "staging"'

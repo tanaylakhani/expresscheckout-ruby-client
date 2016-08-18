@@ -1,0 +1,2 @@
+ class APIConnectionError < JuspayError
+  end

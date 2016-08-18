@@ -11,6 +11,7 @@ class Customers
       @id = get_arg(options, 'id')
       @object = get_arg(options, 'object')
       @date_created = get_arg(options, 'date_created')
+      @last_update = get_arg(options, 'last_updated')
       @email_address = get_arg(options, 'email_address')
       @first_name = get_arg(options, 'first_name')
       @last_name = get_arg(options, 'last_name')
@@ -21,28 +22,12 @@ class Customers
 
   end
 
-  def Customers.add(options={})
+  def Customers.create(options={})
+    if (options.length == 0)
+      raise InvalidArguementError.new()
+    end
     method = 'POST'
     url = '/customers'
-    parameters = {}
-    required_args = {}
-    Array[:object_reference_id, :mobile_number, :email_address, :first_name, :last_name].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:object_reference_id, :mobile_number, :email_address, :first_name, :last_name].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Customers.add"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:object_reference_id, :mobile_number, :email_address, :first_name, :last_name, :mobile_country_code].include?(key)
-        puts " #{key} is an invalid argument for Customers.add"
-      end
-    end
     response = request(method,url,options)
     customers = Customer.new(response.body)
     return customers
@@ -51,39 +36,54 @@ class Customers
   def Customers.list(options={})
     method = 'GET'
     url = '/customers'
-    parameters = {}
     offset = get_arg(options,:offset)
     count = get_arg(options,:count)
 
     if count == NIL and offset == NIL
           puts "count & offset can be passed if required.\n"
     end
-    puts "count #{count}"
-    puts "offset #{offset}"
-    if count
-      parameters.store(:count, count)
-    end
 
-    if offset
-      parameters.store(:offset, offset)
-    end
-
-    options.each do |key, _|
-      unless Array[:count, :offset].include?(key)
-        puts " #{key} is an invalid argument for Customers.list"
-      end
-    end
-
-    required_args = {}
-    puts parameters
-    response = Array(request(method,url,parameters).body['list'])
+    response = request(method,url,options).body
+    customer_list = Array(response['list'])
     customers = []
     i=0
     while i != response.count
-      customer = Customer.new(response[i])
+      customer = Customer.new(customer_list[i])
       customers.push(customer)
       i+=1
     end
+    customer_response = {
+        'count' => response['count'],
+        'offset' => response['offset'],
+        'total' => response['total'],
+        'list' => customers
+    }
+    return customer_response
+  end
+
+  def Customers.get(options={})
+    customer_id = get_arg(options,:customer_id)
+    if customer_id == NIL
+      raise InvalidArguementError.new("`customer_id` is a required parameter for Customers.get().")
+    end
+
+    method = 'GET'
+    url = "/customers/#{customer_id}"
+    response = request(method,url,options)
+    customers = Customer.new(response.body)
+    return customers
+  end
+
+  def Customers.update(options={})
+    customer_id = get_arg(options,:customer_id)
+    if customer_id == NIL
+      raise InvalidArguementError.new("`customer_id` is a required parameter for Customers.update().")
+    end
+
+    method = 'POST'
+    url = "/customers/#{customer_id}"
+    response = request(method,url,options)
+    customers = Customer.new(response.body)
     return customers
   end
 

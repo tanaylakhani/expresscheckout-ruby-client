@@ -18,7 +18,7 @@ class Wallets
 
   end
 
-  def Wallets.add(options={})
+  def Wallets.create(options={})
     raise "ERROR: Not Implemented"
   end
 
@@ -27,7 +27,7 @@ class Wallets
     customer = get_arg(options, :customer_id)
 
     if customer == NIL and order == NIL
-      raise Exception('customer_id or order_id is a required argument for Wallets.list()\n')
+      raise InvalidArguementError.new('`customer_id` or `order_id` is required parameter for Wallets.list()\n')
     end
 
     if customer
@@ -37,9 +37,7 @@ class Wallets
     end
 
     method = 'GET'
-    parameters = {}
-
-    response = Array(request(method,url,parameters).body['list'])
+    response = Array(request(method,url,{}).body['list'])
     wallets = []
     i=0
     while i != response.count
@@ -54,14 +52,12 @@ class Wallets
     customer = get_arg(options, :customer_id)
 
     if customer == NIL
-      raise Exception('customer_id is a required argument for Wallets.list()\n')
+      raise InvalidArguementError.new('`customer_id` is required parameter for Wallets.refresh_balance()\n')
     end
 
     url = "/customers/#{customer}/wallets/refresh-balances"
     method = 'GET'
-    parameters = {}
-
-    response = Array(request(method,url,parameters).body['list'])
+    response = Array(request(method,url,{}).body['list'])
     wallets = []
     i=0
     while i != response.count

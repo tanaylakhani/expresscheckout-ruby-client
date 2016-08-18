@@ -142,57 +142,26 @@ class Orders
   end
 
   def Orders.create(options={})
+    order = get_arg(options, :order_id)
+    if order == NIL
+      raise InvalidArguementError.new('`order_id` is required parameter for Orders.create()\n')
+    end
+
     method = 'POST'
     url = '/order/create'
-    parameters = {}
-    required_args = {}
-    Array[:order_id,:amount].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:order_id,:amount].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Orders.create"
-      end
-    end
-    parameters.each do |key, _|
-      unless @all_input_params.include?(key)
-        puts " #{key} is an invalid argument for Orders.create"
-      end
-    end
-    if parameters[:amount].class != Fixnum and parameters[:amount].class != Float
-      raise "ERROR: 'amount' should be of type Fixnum or FLoat"
-    end
     response = request(method,url,options)
     order = Order.new(response.body)
     return order
   end
 
-  def Orders.get_status(options={})
+  def Orders.status(options={})
+    order = get_arg(options, :order_id)
+    if order == NIL
+      raise InvalidArguementError.new('`order_id` is required parameter for Orders.status()\n')
+    end
+
     method = 'GET'
     url = '/order/status'
-    parameters = {}
-    required_args = {}
-    Array[:order_id].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:order_id].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Orders.get_status"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:order_id].include?(key)
-        puts " #{key} is an invalid argument for Orders.get_status"
-      end
-    end
     response = request(method,url,options)
     order = Order.new(response.body)
     return order
@@ -201,57 +170,6 @@ class Orders
   def Orders.list(options={})
     method = 'GET'
     url = '/order/list'
-    parameters = {}
-    required_args = {}
-    Array[].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Orders.list"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:'created.gt', :'created.gt', :'created.lt', :'created.ge', :'created.le', :count, :offset].include?(key)
-        puts " #{key} is an invalid argument for Orders.get_status"
-      end
-    end
-    parameters.each do |key,_|
-      if key == :'created.gt'
-        if parameters[:'created.gt'].class != Fixnum
-          puts 'created.gt should be of type Numeric\n'
-        end
-      end
-      if key == :'created.lt'
-        if parameters[:'created.lt'].class != Fixnum
-          puts 'lt should be of type Numeric\n'
-        end
-      end
-      if key == :'created.ge'
-        if parameters[:'created.ge'].class != Fixnum
-          puts 'created.ge should be of type Numeric\n'
-        end
-      end
-      if key == :'created.le'
-        if parameters[:'created.le'].class != Fixnum
-          puts 'created.le should be of type Numeric\n'
-        end
-      end
-      if key == :count
-        if parameters[:count].class != Fixnum
-          puts 'count should be of type Numeric\n'
-        end
-      end
-      if key == :offset
-        if parameters[:offset].class != Fixnum
-          puts 'offset should be of type Numeric\n'
-        end
-      end
-    end
     response = request(method,url,options).body
     orders = {count: response['count'],total: response['total'], offset: response['offset'] }
     list = []
@@ -266,77 +184,27 @@ class Orders
   end
 
   def Orders.update(options={})
+    order = get_arg(options, :order_id)
+    if order == NIL
+      raise InvalidArguementError.new('`order_id` is required parameter for Orders.update()\n')
+    end
+
     method = 'POST'
     url = '/order/create'
-    parameters = {}
-    required_args = {}
-    Array[:order_id].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:order_id].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Orders.update"
-      end
-    end
-    parameters.each do |key, _|
-      unless @all_input_params.include?(key)
-        puts " #{key} is an invalid argument for Orders.create"
-      end
-    end
-    parameters.each do |key,_|
-      if key == :currency
-        puts 'currency cannot be changed\n'
-      end
-      if key == :customer_id
-        puts 'customer_id cannot be changed\n'
-      end
-      if key == :customer_email
-        puts 'customer_email cannot be changed\n'
-      end
-      if key == :customer_phone
-        puts 'customer_phone cannot be changed\n'
-      end
-      if key == :description
-        puts 'description cannot be changed\n'
-      end
-      if key == :product_id
-        puts 'product_id cannot be changed\n'
-      end
-      if key == :return_url
-        puts 'return_url cannot be changed\n'
-      end
-    end
     response = request(method,url,options)
     order = Order.new(response.body)
     return order
   end
 
   def Orders.refund(options={})
+    order = get_arg(options, :order_id)
+    unique_request = get_arg(options, :unique_request_id)
+    if order == NIL or unique_request == NIL
+      raise InvalidArguementError.new('`order_id` & `unique_request_id` is required parameter for Orders.refund()\n')
+    end
+
     method = 'POST'
     url = '/order/refund'
-    parameters = {}
-    required_args = {}
-    Array[:unique_request_id,:order_id].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:unique_request_id,:order_id].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Orders.refund"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:unique_request_id,:order_id, :amount].include?(key)
-        puts " #{key} is an invalid argument for Orders.create"
-      end
-    end
     response = request(method,url,options)
     order = Order.new(response.body)
     return order

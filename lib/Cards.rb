@@ -26,56 +26,26 @@ class Cards
 
   end
 
-  def Cards.add(options={})
+  def Cards.create(options={})
+    if (options.length == 0)
+      raise InvalidArguementError.new()
+    end
+
     method = 'POST'
     url = '/card/add'
-    parameters = {}
-    required_args = {}
-    Array[:merchant_id, :customer_id, :customer_email, :card_number, :card_exp_year, :card_exp_month].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:merchant_id, :customer_id, :customer_email, :card_number, :card_exp_year, :card_exp_month].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Cards.add"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:merchant_id, :customer_id, :customer_email, :card_number, :card_exp_year,
-                   :card_exp_month, :name_on_card, :nickname].include?(key)
-        puts " #{key} is an invalid argument for Cards.add"
-      end
-    end
     response = request(method,url,options)
     card = Card.new(response.body)
     return card
   end
 
   def Cards.list(options={})
+    customer_id = get_arg(options,:customer_id)
+    if customer_id == NIL
+      raise InvalidArguementError.new("`customer_id` is a required parameter for Cards.list().")
+    end
+
     method = 'GET'
     url = '/card/list'
-    parameters = {}
-    required_args = {}
-    Array[:customer_id].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:customer_id].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Cards.list"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:customer_id].include?(key)
-        puts " #{key} is an invalid argument for Cards.list"
-      end
-    end
     response = Array(request(method,url,options).body['cards'])
     cards = []
     i=0
@@ -88,27 +58,13 @@ class Cards
   end
 
   def Cards.delete(options={})
+    card_token = get_arg(options,:card_token)
+    if card_token == NIL
+      raise InvalidArguementError.new("`card_token` is a required parameter for Card.delete().")
+    end
+
     method = 'POST'
     url = '/card/delete'
-    parameters = {}
-    required_args = {}
-    Array[:card_token].each do |key|
-      required_args.store(key,'False')
-    end
-    options.each do |key, value|
-      parameters.store(key,value)
-      required_args[key] = 'True'
-    end
-    Array[:card_token].each do |key|
-      if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for  Cards.delete"
-      end
-    end
-    parameters.each do |key, _|
-      unless Array[:card_token].include?(key)
-        puts " #{key} is an invalid argument for Cards.delete"
-      end
-    end
     response = request(method,url,options)
     card = Card.new(response.body)
     return card

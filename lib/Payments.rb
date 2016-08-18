@@ -50,8 +50,7 @@ class Payments
     end
     
     # Either token or card number validation    
-    if required_args[:card_token] == 'False' and !([:card_number, :name_on_card, :card_exp_year,:card_exp_month, :card_security_code].all? 
-                                                                    {|s| options.key? s})
+    if required_args[:card_token] == 'False' and !([:card_number, :name_on_card, :card_exp_year,:card_exp_month, :card_security_code].all? {|s| options.key? s})
         raise "ERROR: Either [card_token] or [card_number, name_on_card, card_exp_year, card_exp_month, card_security_code] are required arguments for Payments.create_card_payment()\n"
     end
         

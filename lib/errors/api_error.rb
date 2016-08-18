@@ -1,0 +1,3 @@
+class APIError < JuspayError
+end
+

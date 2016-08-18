@@ -1,0 +1,3 @@
+class InvalidRequestError < JuspayError
+end
+

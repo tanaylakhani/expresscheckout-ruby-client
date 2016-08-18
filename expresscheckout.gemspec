@@ -14,6 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://www.juspay.in"
   spec.license       = "MIT"
 
+  spec.add_dependency('unirest','>= 1.1')
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
@@ -31,5 +32,3 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
 end
-
-pay_61IBXIRnhNfF2r

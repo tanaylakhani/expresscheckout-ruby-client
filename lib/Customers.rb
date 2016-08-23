@@ -46,11 +46,9 @@ class Customers
     response = request(method,url,options).body
     customer_list = Array(response['list'])
     customers = []
-    i=0
-    while i != response.count
-      customer = Customer.new(customer_list[i])
+    customer_list.each  do |customerData|
+      customer = Customer.new(customerData)
       customers.push(customer)
-      i+=1
     end
     customer_response = {
         'count' => response['count'],

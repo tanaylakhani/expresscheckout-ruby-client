@@ -11,10 +11,13 @@ def request(method, url, parameters={})
   begin
     if $environment == 'production'
       $server = 'https://api.juspay.in'
-    elsif $environment == 'sandbox'
+    elsif $environment == 'staging'
       $server = 'https://sandbox.juspay.in'
     else
-      raise 'ERROR: environment variable can be "production" or "staging"'
+      raise InvalidArguementError.new('ERROR: environment variable can be "production" or "staging"')
+    end
+    if $api_key == nil
+      raise AuthenticationError.new("API key missing. Please specify api_key.")
     end
     if method == 'GET'
       response = Unirest.get $server+url, headers: $version, auth: {:user => $api_key, :password => ''}, parameters: parameters

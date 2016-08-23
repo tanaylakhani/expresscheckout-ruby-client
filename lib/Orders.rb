@@ -173,11 +173,10 @@ class Orders
     response = request(method,url,options).body
     orders = {count: response['count'],total: response['total'], offset: response['offset'] }
     list = []
-    i=0
-    while i < response['count']
-      order = Order.new(response['list'][i])
+    order_list = Array(response['list'])
+    order_list.each do |orderData|
+      order = Order.new(orderData)
       list.push(order)
-      i+=1
     end
     orders[:list] = list
     return orders

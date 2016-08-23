@@ -18,9 +18,8 @@ def pp(obj)
 end
 
 class Test < Minitest::Test
-  # 187BF8D543A545789497F14FCAFBD85C
   $api_key = '187BF8D543A545789497F14FCAFBD85C'
-  $environment = 'sandbox'
+  $environment = 'staging'
 
   def setup
     @timestamp = Time.now.to_i

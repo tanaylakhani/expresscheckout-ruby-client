@@ -41,7 +41,7 @@ class Cards
   def Cards.list(options={})
     customer_id = get_arg(options,:customer_id)
     if customer_id == NIL
-      raise InvalidArguementError.new("`customer_id` is a required parameter for Cards.list().")
+      raise InvalidArguementError.new("ERROR: `customer_id` is a required parameter for Cards.list().")
     end
 
     method = 'GET'
@@ -60,7 +60,7 @@ class Cards
   def Cards.delete(options={})
     card_token = get_arg(options,:card_token)
     if card_token == NIL
-      raise InvalidArguementError.new("`card_token` is a required parameter for Card.delete().")
+      raise InvalidArguementError.new("ERROR: `card_token` is a required parameter for Card.delete().")
     end
 
     method = 'POST'

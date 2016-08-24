@@ -17,7 +17,7 @@ def request(method, url, parameters={})
       raise InvalidArguementError.new('ERROR: environment variable can be "production" or "staging"')
     end
     if $api_key == nil
-      raise AuthenticationError.new("API key missing. Please specify api_key.")
+      raise AuthenticationError.new("ERROR: API key missing. Please specify api_key.")
     end
     if method == 'GET'
       response = Unirest.get $server+url, headers: $version, auth: {:user => $api_key, :password => ''}, parameters: parameters

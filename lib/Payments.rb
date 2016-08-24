@@ -50,13 +50,13 @@ class Payments
     end
     
     # Either token or card number validation    
-    if required_args[:card_token] == 'False' and !([:card_number, :name_on_card, :card_exp_year,:card_exp_month, :card_security_code].all? {|s| options.key? s})
-        raise "ERROR: Either [card_token] or [card_number, name_on_card, card_exp_year, card_exp_month, card_security_code] are required arguments for Payments.create_card_payment()\n"
+    if required_args[:card_token] == 'False' and !([:card_number, :name_on_card, :card_exp_year,:card_exp_month, :card_security_code, :save_to_locker].all? {|s| options.key? s})
+        raise InvalidArguementError.new("ERROR: Either [card_token] or [card_number, name_on_card, card_exp_year, card_exp_month, card_security_code, save_to_locker] are required arguments for Payments.create_card_payment()")
     end
         
-    Array[:order_id, :merchant_id, :save_to_locker, :redirect_after_payment].each do |key|
+    Array[:order_id, :merchant_id, :redirect_after_payment].each do |key|
       if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Payments.create_card_payment"
+        raise InvalidArguementError.new("ERROR: #{key} is a required argument for Payments.create_card_payment")
       end
     end
     parameters.each do |key, _|
@@ -66,11 +66,11 @@ class Payments
         puts " #{key} is an invalid argument for Payments.create_card_payment"
       end
     end
-    if parameters[:save_to_locker] != true and parameters[:save_to_locker] != false
-      raise "ERROR: 'save_to_locker' should be true or false"
+    if required_args[:save_to_locker] == 'True' && parameters[:save_to_locker] != true and parameters[:save_to_locker] != false
+      raise InvalidArguementError.new("ERROR: 'save_to_locker' should be true or false")
     end
     if parameters[:redirect_after_payment] != true and parameters[:redirect_after_payment] != false
-      raise "ERROR: 'redirect_after_payment' should be true or false"
+      raise InvalidArguementError.new("ERROR: 'redirect_after_payment' should be true or false")
     end
 
     response = request(method,url,parameters)
@@ -95,7 +95,7 @@ class Payments
     end
     Array[:order_id, :merchant_id, :payment_method, :redirect_after_payment].each do |key|
       if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Payments.create_net_banking_payment"
+        raise InvalidArguementError.new("ERROR: #{key} is a required argument for Payments.create_net_banking_payment")
       end
     end
     parameters.each do |key, _|
@@ -126,7 +126,7 @@ class Payments
     end
     Array[:order_id, :merchant_id, :payment_method, :redirect_after_payment].each do |key|
       if required_args[key] == 'False'
-        raise "ERROR: #{key} is a required argument for Payments.create_wallet_payment"
+        raise InvalidArguementError.new("ERROR: #{key} is a required argument for Payments.create_wallet_payment")
       end
     end
     parameters.each do |key, _|

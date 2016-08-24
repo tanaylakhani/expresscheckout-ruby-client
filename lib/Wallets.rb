@@ -27,7 +27,7 @@ class Wallets
     customer = get_arg(options, :customer_id)
 
     if customer == NIL and order == NIL
-      raise InvalidArguementError.new('`customer_id` or `order_id` is required parameter for Wallets.list()\n')
+      raise InvalidArguementError.new("ERROR: `customer_id` or `order_id` is required parameter for Wallets.list()")
     end
 
     if customer
@@ -52,7 +52,7 @@ class Wallets
     customer = get_arg(options, :customer_id)
 
     if customer == NIL
-      raise InvalidArguementError.new('`customer_id` is required parameter for Wallets.refresh_balance()\n')
+      raise InvalidArguementError.new("ERROR: `customer_id` is required parameter for Wallets.refresh_balance()")
     end
 
     url = "/customers/#{customer}/wallets/refresh-balances"

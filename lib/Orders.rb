@@ -144,7 +144,7 @@ class Orders
   def Orders.create(options={})
     order = get_arg(options, :order_id)
     if order == NIL
-      raise InvalidArguementError.new('`order_id` is required parameter for Orders.create()\n')
+      raise InvalidArguementError.new("ERROR: `order_id` is required parameter for Orders.create()")
     end
 
     method = 'POST'
@@ -157,7 +157,7 @@ class Orders
   def Orders.status(options={})
     order = get_arg(options, :order_id)
     if order == NIL
-      raise InvalidArguementError.new('`order_id` is required parameter for Orders.status()\n')
+      raise InvalidArguementError.new("ERROR: `order_id` is required parameter for Orders.status()")
     end
 
     method = 'GET'
@@ -185,7 +185,7 @@ class Orders
   def Orders.update(options={})
     order = get_arg(options, :order_id)
     if order == NIL
-      raise InvalidArguementError.new('`order_id` is required parameter for Orders.update()\n')
+      raise InvalidArguementError.new("ERROR: `order_id` is required parameter for Orders.update()")
     end
 
     method = 'POST'
@@ -199,7 +199,7 @@ class Orders
     order = get_arg(options, :order_id)
     unique_request = get_arg(options, :unique_request_id)
     if order == NIL or unique_request == NIL
-      raise InvalidArguementError.new('`order_id` & `unique_request_id` is required parameter for Orders.refund()\n')
+      raise InvalidArguementError.new("ERROR: `order_id` & `unique_request_id` is required parameter for Orders.refund()")
     end
 
     method = 'POST'

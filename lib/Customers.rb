@@ -62,7 +62,7 @@ class Customers
   def Customers.get(options={})
     customer_id = get_arg(options,:customer_id)
     if customer_id == NIL
-      raise InvalidArguementError.new("`customer_id` is a required parameter for Customers.get().")
+      raise InvalidArguementError.new("ERROR: `customer_id` is a required parameter for Customers.get().")
     end
 
     method = 'GET'
@@ -75,7 +75,7 @@ class Customers
   def Customers.update(options={})
     customer_id = get_arg(options,:customer_id)
     if customer_id == NIL
-      raise InvalidArguementError.new("`customer_id` is a required parameter for Customers.update().")
+      raise InvalidArguementError.new("ERROR: `customer_id` is a required parameter for Customers.update().")
     end
 
     method = 'POST'

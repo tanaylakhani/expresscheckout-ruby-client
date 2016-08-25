@@ -38,6 +38,17 @@ class Cards
     return card
   end
 
+  def Cards.tokenize(options={})
+    if (options.length == 0)
+      raise InvalidArguementError.new()
+    end
+
+    method = 'POST'
+    url = '/card/tokenize'
+    response = request(method,url,options).body
+    return response['token']
+  end
+
   def Cards.list(options={})
     customer_id = get_arg(options,:customer_id)
     if customer_id == NIL

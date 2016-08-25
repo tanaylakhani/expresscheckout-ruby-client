@@ -13,11 +13,11 @@ pp list
 
 token = Cards.tokenize(
 		:merchant_id => 'testmerchant',
-		:customer_id => 'yourCustId3',
-		:customer_email => 'a@b.com',
-		:card_number => '4242424242424242',
+		:card_number => '4111111111111111',
 		:card_exp_year => '2019',
-		:card_exp_month => '12',
-		:card_security_code => '123')
+		:card_exp_month => '07',
+		:card_security_code => '123',
+		:name_on_card => 'Sindbad'
+)
 
 print token

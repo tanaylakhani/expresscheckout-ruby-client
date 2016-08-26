@@ -10,14 +10,3 @@ pp order
 
 list = Orders.list()
 pp list
-
-token = Cards.tokenize(
-		:merchant_id => 'testmerchant',
-		:card_number => '4111111111111111',
-		:card_exp_year => '2019',
-		:card_exp_month => '07',
-		:card_security_code => '123',
-		:name_on_card => 'Sindbad'
-)
-
-print token

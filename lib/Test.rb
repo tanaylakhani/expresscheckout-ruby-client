@@ -29,6 +29,9 @@ class Test < Minitest::Test
     # Test for create
     order =   Orders.create(order_id:@timestamp, amount:1000)
     assert_equal('CREATED', order.status)
+    # Test for payment links
+    refute_nil(order.payment_links)
+
     #pp order
 
     # Test for get_status

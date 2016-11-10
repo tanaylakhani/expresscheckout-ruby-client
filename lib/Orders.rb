@@ -119,7 +119,7 @@ class Orders
 
       payment_links = PaymentLink.new(get_arg(options, 'payment_links'))
       
-      @id = get_arg(options, "id")
+      @id = get_arg(options, 'id')
       @merchant_id = get_arg(options, 'merchant_id')
       @order_id = get_arg(options, 'order_id')
       @status = get_arg(options, 'status')

@@ -18,7 +18,7 @@ class Orders
   # noinspection ALL
   class Order
 
-    attr_reader :order_id, :product_id, :billing_address, :udf10, :refunds, :return_url, :bank_error_code, :merchant_id, :amount, :shipping_address, :gateway_id, :customer_id, :gateway_response, :amount_refunded, :udf7, :customer_email, :udf8, :udf9, :txn_id, :udf3, :udf4, :description, :udf5, :bank_error_message, :udf6, :udf1, :udf2, :status, :customer_phone, :currency, :refunded, :status_id
+    attr_reader :id, :order_id, :product_id, :billing_address, :udf10, :refunds, :return_url, :bank_error_code, :merchant_id, :amount, :shipping_address, :gateway_id, :customer_id, :gateway_response, :amount_refunded, :udf7, :customer_email, :udf8, :udf9, :txn_id, :udf3, :udf4, :description, :udf5, :bank_error_message, :udf6, :udf1, :udf2, :status, :customer_phone, :currency, :refunded, :status_id, :payment_links
     class Address
 
       attr_reader :state, :line1, :country, :country_code_iso, :type, :line3, :postal_code, :line2, :first_name, :last_name, :city, :phone
@@ -69,6 +69,18 @@ class Orders
 
     end
 
+    class PaymentLink
+
+      attr_reader :web, :mobile, :iframe
+
+      def initialize(options = {})
+        @web = get_arg(options, 'web')
+        @mobile = get_arg(options, 'mobile')
+        @iframe = get_arg(options, 'iframe')
+      end
+
+    end
+
     def initialize(options = {})
 
       if check_param(options,"billing_address")
@@ -104,6 +116,10 @@ class Orders
       else
         refunds = nil
       end
+
+      payment_links = PaymentLink.new(get_arg(options, 'payment_links'))
+      
+      @id = get_arg(options, 'id')
       @merchant_id = get_arg(options, 'merchant_id')
       @order_id = get_arg(options, 'order_id')
       @status = get_arg(options, 'status')
@@ -137,6 +153,7 @@ class Orders
       @card = card
       @gateway_response = gateway_response
       @refunds = refunds
+      @payment_links = payment_links
     end
 
   end

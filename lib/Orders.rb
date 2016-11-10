@@ -117,11 +117,8 @@ class Orders
         refunds = nil
       end
 
-      if get_arg(options,"payment_links") != nil
-        payment_links = PaymentLink.new(get_arg(options, 'payment_links'))
-      else
-        payment_links = nil
-      end
+      payment_links = PaymentLink.new(get_arg(options, 'payment_links'))
+      
       @id = get_arg(options, "id")
       @merchant_id = get_arg(options, 'merchant_id')
       @order_id = get_arg(options, 'order_id')

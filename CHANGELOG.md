@@ -1,5 +1,8 @@
 # Change Log
 
+## [1.0.8] - 2017-02-08
+### Added
+- Added payment_method and payment_method_type in order class.
 
 ## [1.0.7] - 2016-11-10
 ### Added

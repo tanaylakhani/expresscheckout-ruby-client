@@ -8,8 +8,8 @@ module Expresscheckout
 	require_relative 'Wallets'
 
 	$api_key = nil
-	$environment = 'staging'
-	$version= {:JuspayAPILibrary=>'Ruby v1.0'}
+	$environment = 'production'
+	$api_version= '2016-07-19'
 end
 
 require 'unirest'

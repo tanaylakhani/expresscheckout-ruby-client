@@ -19,10 +19,14 @@ def request(method, url, parameters={})
     if $api_key == nil
       raise AuthenticationError.new("ERROR: API key missing. Please specify api_key.")
     end
+    $headers = {
+        'version' => $api_version,
+        'User-Agent' => "Ruby SDK #{Expresscheckout::VERSION}"
+    }
     if method == 'GET'
-      response = Unirest.get $server+url, headers: $version, auth: {:user => $api_key, :password => ''}, parameters: parameters
+      response = Unirest.get $server+url, headers: $headers, auth: {:user => $api_key, :password => ''}, parameters: parameters
     else
-      response = Unirest.post $server +url, headers: $version, auth: {:user => $api_key, :password => ''}, parameters: parameters
+      response = Unirest.post $server +url, headers: $headers, auth: {:user => $api_key, :password => ''}, parameters: parameters
     end
     if (response.code >= 200 && response.code < 300)
       return response

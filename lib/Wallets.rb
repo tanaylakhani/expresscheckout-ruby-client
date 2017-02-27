@@ -31,6 +31,25 @@ class Wallets
 
     method = 'POST'
     parameters = {
+        :gateway => gateway
+    }
+    response = request(method,url,parameters)
+    wallet = Wallet.new(response.body)
+    return wallet
+  end
+
+  def Wallets.create_and_authenticate(options={})
+    customer = get_arg(options, :customer_id)
+    gateway = get_arg(options, :gateway)
+
+    if customer == NIL or gateway == NIL
+      raise InvalidArguementError.new("ERROR: `customer_id` and `gateway` are required parameters for Wallets.create_and_authenticate()")
+    end
+
+    url = "/customers/#{customer}/wallets"
+
+    method = 'POST'
+    parameters = {
         :command => 'authenticate',
         :gateway => gateway
     }
@@ -84,6 +103,25 @@ class Wallets
     end
     return wallets
   end
+
+  def Wallets.refresh_by_wallet_id(options={})
+    wallet = get_arg(options, :wallet_id)
+
+    if wallet == NIL
+      raise InvalidArguementError.new("ERROR: `wallet_id` is required parameter for Wallets.refresh_by_wallet_id()")
+    end
+
+    url = "/wallets/#{wallet}"
+
+    method = 'POST'
+    parameters = {
+        :command => 'refresh'
+    }
+    response = request(method,url,parameters)
+    wallet = Wallet.new(response.body)
+    return wallet
+  end
+
 
   def Wallets.authenticate(options={})
     wallet = get_arg(options, :wallet_id)

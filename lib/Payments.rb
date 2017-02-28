@@ -31,6 +31,17 @@ class Payments
 
   end
 
+  class PaymentMethod
+
+    attr_reader :payment_method_type, :payment_method, :description
+    def initialize(options={})
+      @payment_method_type = get_arg(options, 'payment_method_type')
+      @payment_method = get_arg(options, 'payment_method')
+      @description = get_arg(options, 'description')
+    end
+
+  end
+
   def Payments.create_card_payment(options={})
     method = 'POST'
     url = '/txns'
@@ -138,6 +149,27 @@ class Payments
     response = request(method,url,parameters)
     payment = Transaction.new(response.body)
     return payment
+  end
+
+  def Payments.get_payment_methods(options={})
+    merchant = get_arg(options, :merchant_id)
+
+    if merchant == NIL
+      raise InvalidArguementError.new("ERROR: `merchant_id` is required parameter for Payments.get_payment_methods()")
+    end
+
+    url = "/merchants/#{merchant}/paymentmethods"
+
+    method = 'GET'
+    response = Array(request(method,url,{}).body['payment_methods'])
+    payment_methods = []
+    i=0
+    while i != response.count
+      payment_method = PaymentMethod.new(response[i])
+      payment_methods.push(payment_method)
+      i+=1
+    end
+    return payment_methods
   end
 
 end

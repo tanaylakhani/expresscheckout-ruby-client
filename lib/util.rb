@@ -19,19 +19,23 @@ def request(method, url, parameters={})
     if $api_key == nil
       raise AuthenticationError.new("ERROR: API key missing. Please specify api_key.")
     end
+    $headers = {
+        'version' => $api_version,
+        'User-Agent' => "Ruby SDK #{Expresscheckout::VERSION}"
+    }
     if method == 'GET'
-      response = Unirest.get $server+url, headers: $version, auth: {:user => $api_key, :password => ''}, parameters: parameters
+      response = Unirest.get $server+url, headers: $headers, auth: {:user => $api_key, :password => ''}, parameters: parameters
     else
-      response = Unirest.post $server +url, headers: $version, auth: {:user => $api_key, :password => ''}, parameters: parameters
+      response = Unirest.post $server +url, headers: $headers, auth: {:user => $api_key, :password => ''}, parameters: parameters
     end
     if (response.code >= 200 && response.code < 300)
       return response
     elsif ([400, 404].include? response.code)
-      raise InvalidRequestError.new('Invalid Request', response.code, response.body)
+      raise InvalidRequestError.new('Invalid Request', response.code, response.body, parameters)
     elsif (response.code == 401)
-      raise AuthenticationError.new('Unauthenticated Request', response.code, response.body)
+      raise AuthenticationError.new('Unauthenticated Request', response.code, response.body, parameters)
     else
-      raise APIError.new('Invalid Request', response.code, response.body)
+      raise APIError.new('Invalid Request', response.code, response.body, parameters)
     end
   rescue IOError
     raise APIConnectionError.new('Connection error')

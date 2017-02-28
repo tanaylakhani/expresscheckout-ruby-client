@@ -18,7 +18,7 @@ class Orders
   # noinspection ALL
   class Order
 
-    attr_reader :id, :order_id, :product_id, :billing_address, :udf10, :refunds, :return_url, :bank_error_code, :merchant_id, :amount, :shipping_address, :gateway_id, :customer_id, :gateway_response, :amount_refunded, :udf7, :customer_email, :udf8, :udf9, :txn_id, :udf3, :udf4, :description, :udf5, :bank_error_message, :udf6, :udf1, :udf2, :status, :customer_phone, :currency, :refunded, :status_id, :payment_links
+    attr_reader :id, :order_id, :product_id, :billing_address, :udf10, :refunds, :return_url, :bank_error_code, :merchant_id, :amount, :shipping_address, :gateway_id, :customer_id, :gateway_response, :amount_refunded, :udf7, :customer_email, :udf8, :udf9, :txn_id, :udf3, :udf4, :description, :udf5, :bank_error_message, :udf6, :udf1, :udf2, :status, :customer_phone, :currency, :refunded, :status_id, :payment_links, :payment_method_type, :payment_method
     class Address
 
       attr_reader :state, :line1, :country, :country_code_iso, :type, :line3, :postal_code, :line2, :first_name, :last_name, :city, :phone
@@ -150,6 +150,8 @@ class Orders
       @bank_error_message = get_arg(options, 'bank_error_message')
       @refunded = get_arg(options, 'refunded')
       @amount_refunded = get_arg(options, 'amount_refunded')
+      @payment_method_type = get_arg(options, 'payment_method_type')
+      @payment_method = get_arg(options, 'payment_method')
       @card = card
       @gateway_response = gateway_response
       @refunds = refunds

@@ -113,7 +113,7 @@ class Wallets
 
     url = "/wallets/#{wallet}"
 
-    method = 'POST'
+    method = 'GET'
     parameters = {
         :command => 'refresh'
     }
@@ -177,9 +177,5 @@ class Wallets
     response = request(method,url,parameters)
     wallet = Wallet.new(response.body)
     return wallet
-  end
-
-  def Wallets.delete(options={})
-    raise "ERROR: Not Implemented"
   end
 end

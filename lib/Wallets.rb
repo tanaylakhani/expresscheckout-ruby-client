@@ -20,14 +20,14 @@ class Wallets
   end
 
   def Wallets.create(options={})
-    customer = get_arg(options, :customer_id)
+    customer_id = get_arg(options, :customer_id)
     gateway = get_arg(options, :gateway)
 
-    if customer == NIL or gateway == NIL
+    if customer_id == NIL or customer_id == '' or gateway == NIL or gateway == ''
       raise InvalidArguementError.new("ERROR: `customer_id` and `gateway` are required parameters for Wallets.create()")
     end
 
-    url = "/customers/#{customer}/wallets"
+    url = "/customers/#{customer_id}/wallets"
 
     method = 'POST'
     parameters = {
@@ -39,14 +39,14 @@ class Wallets
   end
 
   def Wallets.create_and_authenticate(options={})
-    customer = get_arg(options, :customer_id)
+    customer_id = get_arg(options, :customer_id)
     gateway = get_arg(options, :gateway)
 
-    if customer == NIL or gateway == NIL
+    if customer_id == NIL or customer_id == '' or gateway == NIL or gateway == ''
       raise InvalidArguementError.new("ERROR: `customer_id` and `gateway` are required parameters for Wallets.create_and_authenticate()")
     end
 
-    url = "/customers/#{customer}/wallets"
+    url = "/customers/#{customer_id}/wallets"
 
     method = 'POST'
     parameters = {
@@ -59,17 +59,17 @@ class Wallets
   end
 
   def Wallets.list(options={})
-    order = get_arg(options, :order_id)
-    customer = get_arg(options, :customer_id)
+    order_id = get_arg(options, :order_id)
+    customer_id = get_arg(options, :customer_id)
 
-    if customer == NIL and order == NIL
+    if (customer_id == NIL or customer_id == '') and (order_id == NIL or order_id == '')
       raise InvalidArguementError.new("ERROR: `customer_id` or `order_id` is required parameter for Wallets.list()")
     end
 
-    if customer
-      url = "/customers/#{customer}/wallets"
+    if customer_id
+      url = "/customers/#{customer_id}/wallets"
     else
-      url = "/orders/#{order}/wallets"
+      url = "/orders/#{order_id}/wallets"
     end
 
     method = 'GET'
@@ -85,13 +85,13 @@ class Wallets
   end
 
   def Wallets.refresh_balance(options={})
-    customer = get_arg(options, :customer_id)
+    customer_id = get_arg(options, :customer_id)
 
-    if customer == NIL
+    if customer_id == NIL or customer_id == ''
       raise InvalidArguementError.new("ERROR: `customer_id` is required parameter for Wallets.refresh_balance()")
     end
 
-    url = "/customers/#{customer}/wallets/refresh-balances"
+    url = "/customers/#{customer_id}/wallets/refresh-balances"
     method = 'GET'
     response = Array(request(method,url,{}).body['list'])
     wallets = []
@@ -105,13 +105,13 @@ class Wallets
   end
 
   def Wallets.refresh_by_wallet_id(options={})
-    wallet = get_arg(options, :wallet_id)
+    wallet_id = get_arg(options, :wallet_id)
 
-    if wallet == NIL
+    if wallet_id == NIL or wallet_id == ''
       raise InvalidArguementError.new("ERROR: `wallet_id` is required parameter for Wallets.refresh_by_wallet_id()")
     end
 
-    url = "/wallets/#{wallet}"
+    url = "/wallets/#{wallet_id}"
 
     method = 'GET'
     parameters = {
@@ -124,13 +124,13 @@ class Wallets
 
 
   def Wallets.authenticate(options={})
-    wallet = get_arg(options, :wallet_id)
+    wallet_id = get_arg(options, :wallet_id)
 
-    if wallet == NIL
+    if wallet_id == NIL or wallet_id == ''
       raise InvalidArguementError.new("ERROR: `wallet_id` is required parameter for Wallets.authenticate()")
     end
 
-    url = "/wallets/#{wallet}"
+    url = "/wallets/#{wallet_id}"
 
     method = 'POST'
     parameters = {
@@ -142,14 +142,14 @@ class Wallets
   end
 
   def Wallets.link(options={})
-    wallet = get_arg(options, :wallet_id)
+    wallet_id = get_arg(options, :wallet_id)
     otp = get_arg(options, :otp)
 
-    if wallet == NIL or otp == NIL
+    if wallet_id == NIL or wallet_id == '' or otp == NIL or otp == ''
       raise InvalidArguementError.new("ERROR: `wallet_id` and `otp` are required parameters for Wallets.link()")
     end
 
-    url = "/wallets/#{wallet}"
+    url = "/wallets/#{wallet_id}"
 
     method = 'POST'
     parameters = {
@@ -162,13 +162,13 @@ class Wallets
   end
 
   def Wallets.delink(options={})
-    wallet = get_arg(options, :wallet_id)
+    wallet_id = get_arg(options, :wallet_id)
 
-    if wallet == NIL
+    if wallet_id == NIL or wallet_id == ''
       raise InvalidArguementError.new("ERROR: `wallet_id` is required parameter for Wallets.delink()")
     end
 
-    url = "/wallets/#{wallet}"
+    url = "/wallets/#{wallet_id}"
 
     method = 'POST'
     parameters = {

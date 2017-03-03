@@ -3,18 +3,6 @@ require_relative 'Cards'
 
 class Orders
 
-  @all_input_params = Array[:order_id, :amount, :currency, :customer_id, :customer_email, :customer_phone,
-        :description, :product_id, :gateway_id, :return_url, :billing_address_first_name,
-        :billing_address_last_name, :billing_address_line1, :billing_address_line2,
-        :billing_address_line3, :billing_address_city, :billing_address_state,
-        :billing_address_country, :billing_address_postal_code, :billing_address_phone,
-        :billing_address_country_code_iso, :shipping_address_first_name,
-        :shipping_address_last_name, :shipping_address_line1, :shipping_address_line2,
-        :shipping_address_line3, :shipping_address_city, :shipping_address_state,
-        :shipping_address_country, :shipping_address_postal_code, :shipping_address_phone,
-        :shipping_address_country_code_iso, :udf1, :udf2, :udf3, :udf4, :udf5, :udf6, :udf7,
-        :udf8, :udf9, :udf10]
-
   # noinspection ALL
   class Order
 
@@ -161,8 +149,8 @@ class Orders
   end
 
   def Orders.create(options={})
-    order = get_arg(options, :order_id)
-    if order == NIL
+    order_id = get_arg(options, :order_id)
+    if order_id == NIL or order_id == ''
       raise InvalidArguementError.new("ERROR: `order_id` is required parameter for Orders.create()")
     end
 
@@ -174,8 +162,8 @@ class Orders
   end
 
   def Orders.status(options={})
-    order = get_arg(options, :order_id)
-    if order == NIL
+    order_id = get_arg(options, :order_id)
+    if order_id == NIL or order_id == ''
       raise InvalidArguementError.new("ERROR: `order_id` is required parameter for Orders.status()")
     end
 
@@ -202,8 +190,8 @@ class Orders
   end
 
   def Orders.update(options={})
-    order = get_arg(options, :order_id)
-    if order == NIL
+    order_id = get_arg(options, :order_id)
+    if order_id == NIL or order_id == ''
       raise InvalidArguementError.new("ERROR: `order_id` is required parameter for Orders.update()")
     end
 
@@ -215,10 +203,12 @@ class Orders
   end
 
   def Orders.refund(options={})
-    order = get_arg(options, :order_id)
-    unique_request = get_arg(options, :unique_request_id)
-    if order == NIL or unique_request == NIL
-      raise InvalidArguementError.new("ERROR: `order_id` & `unique_request_id` is required parameter for Orders.refund()")
+    order_id = get_arg(options, :order_id)
+    unique_request_id = get_arg(options, :unique_request_id)
+    if order_id == NIL or order_id == '' or
+        unique_request_id == NIL or unique_request_id == '' or
+          amount == NIL or amount == ''
+      raise InvalidArguementError.new("ERROR: `order_id`, `amount`  & `unique_request_id` is required parameter for Orders.refund()")
     end
 
     method = 'POST'

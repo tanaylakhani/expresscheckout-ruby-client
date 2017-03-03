@@ -9,7 +9,7 @@ module Expresscheckout
 
 	$api_key = nil
 	$environment = 'production'
-	$api_version= '2016-07-19'
+	$api_version= '2016-10-27'
 end
 
 require 'unirest'

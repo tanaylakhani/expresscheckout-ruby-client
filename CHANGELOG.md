@@ -6,7 +6,6 @@
 - Added implementation for Wallet create, create_and_authenticate, authenticate, refresh_by_wallet_id, link & delink.
 - Added implementation for get_payment_methods in Payments class.
 - Added request parameters in error response.
-- Added api version as 2016-07-19.
 
 ## [0.1.7] - 2016-11-10
 ### Added
